@@ -1,0 +1,20 @@
+{
+    "LoadPage": "Bem-Vindo(a)",
+    "LoadExcluindo": "Excluindo...",
+    "homeInserir": "Inserir",
+    "homeVazio": "Nenhum livro foi registrado até o momento.",
+    "CadastrarISBN": "ISBN",
+    "CadastrarManual": "Manual",
+    "CadastrarPesquisar": "Pesquisar",
+    "CadastrarPlaceHolderISBN": "Insira o ISBN",
+    "CadastrarTituloISBN": "Título:",
+    "CadastrarPlaceHolderTittle": "Insira o título do livro",
+    "CadastrarTituloAutor": "Autor:",
+    "CadastrarPlaceHolderAutor": "Insira o nome do autor",
+    "CadastrarTituloTotalPagina": "Total de Paginas:",
+    "CadastrarPlaceHolderTotalPagina": "Insira o total de paginas",
+    "CadastrarPlaceHolderTotalPaginaLida": "Insiria o total de paginas lidas",
+    "CadastrarTituloPaginaLida": "Paginas Lidas:",
+    "CadastrarSalvar": "Salvar",
+    "CadastrarExcluir": "Excluir"
+}
