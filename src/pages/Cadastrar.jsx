@@ -47,9 +47,9 @@ export default function Cadastrar({ navigation, route }) {
             const autorKey = resp.authors[0].key
             const respAutor = await Autor(autorKey)
             if (respAutor) {
-                handleTittle(resp.title)
-                handleAutor(respAutor.name)
-                handleTotalPaginaUser(`${resp.number_of_pages}`)
+                if (resp.title) handleTittle(resp.title)
+                if (respAutor.name) handleAutor(respAutor.name)
+                if (resp.number_of_pages) handleTotalPaginaUser(`${resp.number_of_pages}`)
                 handleISBN('')
                 renderManual()
             }
