@@ -69,6 +69,30 @@ export default function Cadastrar({ navigation, route }) {
     );
 
     const saveData = async () => {
+        // Verificações de validação
+        const isValidTitulo = /^[^\s]+/.test(tittleUser.trim());
+        const isValidAutor = /^[^\s]+/.test(autorUser.trim());
+        const isValidTotalPaginas = totalPaginaUser > 0;
+        const isValidPaginasLidas = pageLidaUser.trim() !== '' && parseInt(pageLidaUser, 10) >= 0 && parseInt(pageLidaUser, 10) <= parseInt(totalPaginaUser, 10);
+
+        // Verificações antes de prosseguir
+        if (!isValidTitulo) {
+            console.log('O título não é válido. Deve ser uma string não vazia.');
+            return; // Retorna sem continuar se não for válido
+        }
+        if (!isValidAutor) {
+            console.log('O autor não é válido. Deve ser uma string não vazia.');
+            return; // Retorna sem continuar se não for válido
+        }
+        if (!isValidTotalPaginas) {
+            console.log('O número total de páginas não é válido. Deve ser maior que zero.');
+            return; // Retorna sem continuar se não for válido
+        }
+        if (!isValidPaginasLidas) {
+            console.log('O número de páginas lidas não é válido. Deve estar entre 0 e o total de páginas.');
+            return; // Retorna sem continuar se não for válido
+        }
+
         if (editBook) {
             const updatedJson = Json.filter((_, idx) => idx !== index);
             const book = { "autor": autorUser, "titulo": tittleUser, "paginas": totalPaginaUser, "paginaLida": pageLidaUser }
