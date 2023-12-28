@@ -7,7 +7,7 @@ export default ({ eventChange, text }) => {
 
     return (
         <View style={style.container}>
-            <ActivityIndicator size="large" color={colors.white} />
+            <ActivityIndicator size="large" color={colors.green} />
             <Text style={style.Text}>{text}</Text>
         </View>
     )

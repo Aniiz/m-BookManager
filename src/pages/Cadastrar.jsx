@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { View, Image, TouchableOpacity, Text, ScrollView, ToastAndroid } from 'react-native';
 import { useState, useEffect } from 'react';
 import { colors, styles } from '../globalVariables/globalStyle'
 import translations from '../translation/localization';
@@ -40,6 +40,8 @@ export default function Cadastrar({ navigation, route }) {
     const handleJson = Json => setJson(Json);
 
     const searchISBN = async () => {
+        setLoading(true)
+
         // colocar verificação de enviar solicitaçao sometnte se tiver isbn escrito, talvez mandar uma mensagem pro usuário
         const resp = await ISBN(isbnUser)
 
@@ -54,6 +56,7 @@ export default function Cadastrar({ navigation, route }) {
                 renderManual()
             }
         }
+        setLoading(false)
     }
 
     useEffect(() =>
@@ -69,6 +72,7 @@ export default function Cadastrar({ navigation, route }) {
     );
 
     const saveData = async () => {
+
         // Verificações de validação
         const isValidTitulo = /^[^\s]+/.test(tittleUser.trim());
         const isValidAutor = /^[^\s]+/.test(autorUser.trim());
@@ -77,20 +81,40 @@ export default function Cadastrar({ navigation, route }) {
 
         // Verificações antes de prosseguir
         if (!isValidTitulo) {
-            console.log('O título não é válido. Deve ser uma string não vazia.');
-            return; // Retorna sem continuar se não for válido
+            ToastAndroid.showWithGravity(
+                translations.TittleEmpty,
+                ToastAndroid.TOP,
+                ToastAndroid.CENTER
+            )
+
+            return;
         }
         if (!isValidAutor) {
-            console.log('O autor não é válido. Deve ser uma string não vazia.');
-            return; // Retorna sem continuar se não for válido
+            ToastAndroid.showWithGravity(
+                translations.AutorEmpty,
+                ToastAndroid.TOP,
+                ToastAndroid.CENTER
+            )
+
+            return;
         }
         if (!isValidTotalPaginas) {
-            console.log('O número total de páginas não é válido. Deve ser maior que zero.');
-            return; // Retorna sem continuar se não for válido
+            ToastAndroid.showWithGravity(
+                translations.TotalPaginasEmpty,
+                ToastAndroid.TOP,
+                ToastAndroid.CENTER
+            )
+
+            return;
         }
         if (!isValidPaginasLidas) {
-            console.log('O número de páginas lidas não é válido. Deve estar entre 0 e o total de páginas.');
-            return; // Retorna sem continuar se não for válido
+            ToastAndroid.showWithGravity(
+                translations.PagLidasInvalido,
+                ToastAndroid.TOP,
+                ToastAndroid.CENTER
+            )
+
+            return;
         }
 
         if (editBook) {
@@ -141,11 +165,15 @@ export default function Cadastrar({ navigation, route }) {
 
     let render;
 
-    loading ? render = (<Loader text={translations.LoadExcluindo} />) :
 
-        rendertype == 'ISBN' ?
-            render = (
+
+    rendertype == 'ISBN' ?
+        (
+            loading ? render = (
+
+
                 <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+                    <Loader text={translations.Loading} />
                     <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
 
                     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
@@ -157,10 +185,29 @@ export default function Cadastrar({ navigation, route }) {
                         <InputLabel type={'numeric'} text={'ISBN:'} marginBottom={20} val={isbnUser} eventChange={handleISBN} maxLength={20} placeholder={translations.CadastrarPlaceHolderISBN}></InputLabel>
                         <Button dados={translations.CadastrarPesquisar} color={colors.white} backgroundColor={colors.green} marginTop={'auto'} eventPress={searchISBN} />
                     </WhiteView>
-                </View >) :
-            render = (
-                !editBook ? (
+                </View >
+            ) :
+                render = (
                     <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+                        <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
+
+                        <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+                            <Button dados={translations.CadastrarISBN} marginTop={30} eventPress={renderISBN} selected={true} />
+                            <Button dados={translations.CadastrarManual} backgroundColor={colors.green} marginTop={30} eventPress={renderManual} />
+                        </View>
+
+                        <WhiteView>
+                            <InputLabel type={'numeric'} text={'ISBN:'} marginBottom={20} val={isbnUser} eventChange={handleISBN} maxLength={20} placeholder={translations.CadastrarPlaceHolderISBN}></InputLabel>
+                            <Button dados={translations.CadastrarPesquisar} color={colors.white} backgroundColor={colors.green} marginTop={'auto'} eventPress={searchISBN} />
+                        </WhiteView>
+                    </View >)
+        ) :
+        render = (
+            !editBook ? (
+                loading ? render = (
+                    <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+
+                        <Loader text={translations.Loading} />
                         <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
 
                         <View style={{ ...styles.row, justifyContent: 'space-around' }}>
@@ -180,10 +227,36 @@ export default function Cadastrar({ navigation, route }) {
                             <Button dados={translations.CadastrarSalvar} color={colors.white} backgroundColor={colors.green} marginTop={'auto'} eventPress={saveData} />
                         </WhiteView>
                     </View >
-                )
-                    :
+                ) :
                     (
                         <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+
+                            <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
+
+                            <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+                                <Button dados={translations.CadastrarISBN} backgroundColor={colors.green} marginTop={30} eventPress={renderISBN} />
+                                <Button dados={translations.CadastrarManual} marginTop={30} eventPress={renderManual} selected={true} />
+                            </View>
+
+                            <WhiteView>
+                                <InputLabel text={translations.CadastrarTituloISBN} marginBottom={20} val={tittleUser} eventChange={handleTittle} maxLength={50} placeholder={translations.CadastrarPlaceHolderTittle}></InputLabel>
+
+                                <InputLabel text={translations.CadastrarTituloAutor} marginBottom={20} val={autorUser} eventChange={handleAutor} maxLength={50} placeholder={translations.CadastrarPlaceHolderAutor}></InputLabel>
+
+                                <InputLabel type={'numeric'} text={translations.CadastrarTituloTotalPagina} marginBottom={20} val={totalPaginaUser} eventChange={handleTotalPaginaUser} maxLength={50} placeholder={translations.CadastrarPlaceHolderTotalPagina}></InputLabel>
+
+                                <InputLabel type={'numeric'} text={translations.CadastrarTituloPaginaLida} marginBottom={20} val={pageLidaUser} eventChange={handlePageLidaUser} placeholder={translations.CadastrarPlaceHolderTotalPaginaLida} maxLength={50}></InputLabel>
+
+                                <Button dados={translations.CadastrarSalvar} color={colors.white} backgroundColor={colors.green} marginTop={'auto'} eventPress={saveData} />
+                            </WhiteView>
+                        </View >)
+            )
+                :
+                (
+                    loading ? render = (
+                        <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+                            <Loader text={translations.Loading} />
+
                             <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
 
                             <View style={{ ...styles.row, justifyContent: 'space-around' }}>
@@ -206,8 +279,33 @@ export default function Cadastrar({ navigation, route }) {
                                 </View>
                             </WhiteView>
                         </View >
-                    )
-            )
+                    ) :
+                        <View style={{ ...styles.container, backgroundColor: colors.yellow }}>
+
+                            <ButtonIcon src={require('../../assets/backArrow.png')} marginleft={10} marginTop={10} size={23} eventPress={toList} ></ButtonIcon>
+
+                            <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+                                <Button dados={translations.CadastrarISBN} backgroundColor={colors.green} marginTop={30} eventPress={renderISBN} />
+                                <Button dados={translations.CadastrarManual} marginTop={30} eventPress={renderManual} selected={true} />
+                            </View>
+
+                            <WhiteView>
+                                <InputLabel text={translations.CadastrarTituloISBN} marginBottom={20} val={tittleUser} eventChange={handleTittle} maxLength={50} placeholder={translations.CadastrarPlaceHolderTittle}></InputLabel>
+
+                                <InputLabel text={translations.CadastrarTituloAutor} marginBottom={20} val={autorUser} eventChange={handleAutor} maxLength={50} placeholder={translations.CadastrarPlaceHolderAutor}></InputLabel>
+
+                                <InputLabel type={'numeric'} text={translations.CadastrarTituloTotalPagina} marginBottom={20} val={totalPaginaUser} eventChange={handleTotalPaginaUser} maxLength={50} placeholder={translations.CadastrarPlaceHolderTotalPagina}></InputLabel>
+
+                                <InputLabel type={'numeric'} text={translations.CadastrarTituloPaginaLida} marginBottom={20} val={pageLidaUser} eventChange={handlePageLidaUser} placeholder={translations.CadastrarPlaceHolderTotalPaginaLida} maxLength={50}></InputLabel>
+
+                                <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+                                    <Button dados={translations.CadastrarSalvar} color={colors.white} backgroundColor={colors.green} eventPress={saveData} marginright={6} />
+                                    <Button dados={translations.CadastrarExcluir} color={colors.white} backgroundColor={colors.gray} eventPress={ExcludeData} />
+                                </View>
+                            </WhiteView>
+                        </View >
+                )
+        )
 
 
     return render;

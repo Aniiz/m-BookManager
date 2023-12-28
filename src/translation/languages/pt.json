@@ -1,6 +1,6 @@
 {
     "LoadPage": "Bem-Vindo(a)",
-    "LoadExcluindo": "Excluindo...",
+    "Loading": "Aguarde...",
     "homeInserir": "Inserir",
     "homeVazio": "Nenhum livro foi registrado até o momento.",
     "CadastrarISBN": "ISBN",
@@ -16,5 +16,12 @@
     "CadastrarPlaceHolderTotalPaginaLida": "Insiria o total de paginas lidas",
     "CadastrarTituloPaginaLida": "Paginas Lidas:",
     "CadastrarSalvar": "Salvar",
-    "CadastrarExcluir": "Excluir"
+    "CadastrarExcluir": "Excluir",
+    "ISBNVazio": "Preencha o campo ISBN",
+    "ISBNOff": "ISBN não encontrado, por favor, utilize o cadastro manual",
+    "ISBNInvalido": "ISBN inválido, por favor, utilize um ISBN válido",
+    "TittleEmpty": "Por favor, insira um título",
+    "AutorEmpty": "Por favor, insira um autor",
+    "TotalPaginasEmpty": "Por favor, insira um número de paginas válido",
+    "PagLidasInvalido": "O número de páginas lidas é inválido, deve estar entre zero e o total de páginas"
 }

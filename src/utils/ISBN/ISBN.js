@@ -1,9 +1,16 @@
 import ISBNGet from "./request/ISBNGet";
 import ValidISBN from "./ValidISBN";
+import { ToastAndroid } from "react-native";
+import translations from '../../translation/localization'
 
 export default ISBN = async (ISBN) => {
     if (ISBN == '') {
-        console.log('vazio')
+        ToastAndroid.showWithGravity(
+            translations.ISBNVazio,
+            ToastAndroid.TOP,
+            ToastAndroid.CENTER
+        )
+
         return false
     }
 
@@ -16,12 +23,22 @@ export default ISBN = async (ISBN) => {
             return bookData
 
         } else {
-            console.log('ISBN não encontrado, utilize o cadastro manual')
+            ToastAndroid.showWithGravity(
+                translations.ISBNOff,
+                ToastAndroid.TOP,
+                ToastAndroid.CENTER
+            )
+
             return false
         }
 
     } else {
-        console.log('invalido')
+        ToastAndroid.showWithGravity(
+            translations.ISBNInvalido,
+            ToastAndroid.TOP,
+            ToastAndroid.CENTER
+        )
+
         return false
     }
 };

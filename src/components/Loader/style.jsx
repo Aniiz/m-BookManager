@@ -3,13 +3,18 @@ import { colors } from '../../globalVariables/globalStyle';
 
 export const style = StyleSheet.create({
     container: {
-        flex: 1,
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.yellow
+        backgroundColor: 'transparent',
+        zIndex: 1,
     },
     Text: {
-        color: colors.white,
+        color: colors.green,
         fontSize: 24
     },
 });
